@@ -3,10 +3,12 @@ package com.github.domktorymysli.grenton.cipher.encoder;
 import com.github.domktorymysli.grenton.cipher.model.CipherKey;
 import com.github.domktorymysli.grenton.cipher.model.MessageDecoded;
 import com.github.domktorymysli.grenton.cipher.model.MessageEncoded;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.*;
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 public class Encoder {
 
@@ -17,8 +19,8 @@ public class Encoder {
     }
 
     public MessageEncoded encode(MessageDecoded message) throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException, InvalidKeyException, ShortBufferException, IllegalBlockSizeException, BadPaddingException {
-        Security.addProvider(new BouncyCastleProvider());
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, this.cipherKey.getSecretKey(), this.cipherKey.getIvSpec());
 
         byte[] result = new byte[cipher.getOutputSize(message.getLength())];
